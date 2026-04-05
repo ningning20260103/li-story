@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陆灼焱 · 人物关系与剧情导图</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --ink: #1a1410;
+  --paper: #f5f0e8;
+  --gold: #b8860b;
+  --gold-light: #daa520;
+  --vermillion: #c4463a;
+  --jade: #2d7d6e;
+  --indigo: #34495e;
+  --mist: #8899a6;
+  --shadow: rgba(26, 20, 16, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.page-header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 24px auto 0;
+}
+
+.page-header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 2.4em;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+}
+
+.page-header .subtitle {
+  font-size: 0.95em;
+  color: var(--mist);
+  margin-top: 8px;
+  letter-spacing: 0.3em;
+  font-weight: 300;
+}
+
+/* Tab Navigation */
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 0 auto 40px;
+  max-width: 600px;
+  border-bottom: 1px solid rgba(184, 134, 11, 0.3);
+}
+
+.tab-btn {
+  padding: 14px 32px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--mist);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+  letter-spacing: 0.1em;
+}
+
+.tab-btn.active {
+  color: var(--gold);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20%;
+  width: 60%;
+  height: 2px;
+  background: var(--gold);
+}
+
+.tab-btn:hover { color: var(--gold-light); }
+
+.tab-content { display: none; padding: 0 20px 60px; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+/* === Character Cards === */
+.faction-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 40px 0 20px;
+  padding-left: 16px;
+  border-left: 3px solid var(--gold);
+  letter-spacing: 0.08em;
+}
+
+.faction-title:first-child { margin-top: 0; }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.char-card {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border-top: 3px solid var(--gold);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.char-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 20, 16, 0.12);
+}
+
+.char-card.villain { border-top-color: var(--vermillion); }
+.char-card.neutral { border-top-color: var(--indigo); }
+.char-card.jade { border-top-color: var(--jade); }
+
+.char-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.25em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.char-title {
+  font-size: 0.65em;
+  font-weight: 400;
+  color: var(--mist);
+  background: rgba(136, 153, 166, 0.1);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.char-desc {
+  margin-top: 12px;
+  font-size: 0.9em;
+  line-height: 1.8;
+  color: #4a4540;
+}
+
+.char-relations {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(184, 134, 11, 0.2);
+  font-size: 0.85em;
+  color: var(--mist);
+  line-height: 1.9;
+}
+
+.rel-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  margin-right: 2px;
+}
+
+.rel-tag.love { background: rgba(196, 70, 58, 0.1); color: var(--vermillion); }
+.rel-tag.friend { background: rgba(45, 125, 110, 0.1); color: var(--jade); }
+.rel-tag.enemy { background: rgba(52, 73, 94, 0.1); color: var(--indigo); }
+.rel-tag.family { background: rgba(184, 134, 11, 0.1); color: var(--gold); }
+
+/* === Timeline === */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold), var(--vermillion), var(--indigo));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -33px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--paper);
+}
+
+.timeline-item.critical::before { background: var(--vermillion); }
+.timeline-item.turning::before { background: var(--jade); }
+
+.timeline-era {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.85em;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.timeline-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.15em;
+  font-weight: 700;
+  margin: 6px 0 10px;
+}
+
+.timeline-desc {
+  font-size: 0.9em;
+  line-height: 1.9;
+  color: #4a4540;
+}
+
+.timeline-branch {
+  margin-top: 30px;
+  padding: 20px;
+  border-left: 3px solid var(--vermillion);
+  background: rgba(196, 70, 58, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+
+.timeline-branch .branch-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--vermillion);
+  margin-bottom: 16px;
+  letter-spacing: 0.1em;
+}
+
+.branch-item {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(196, 70, 58, 0.15);
+  font-size: 0.9em;
+  line-height: 1.8;
+  color: #4a4540;
+}
+
+.branch-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.branch-item strong {
+  display: block;
+  font-family: 'Noto Serif SC', serif;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* === Power Structure === */
+.power-diagram {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.power-level {
+  text-align: center;
+}
+
+.power-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.85em;
+  color: var(--mist);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+.power-nodes {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.power-node {
+  background: white;
+  border-radius: 8px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 12px var(--shadow);
+  min-width: 160px;
+  transition: transform 0.2s;
+}
+
+.power-node:hover { transform: scale(1.03); }
+
+.power-node.emperor { border: 2px solid var(--gold); }
+.power-node.left { border: 2px solid var(--vermillion); }
+.power-node.right { border: 2px solid var(--indigo); }
+.power-node.mid { border: 2px solid var(--jade); }
+.power-node.royal { border: 2px solid var(--gold-light); }
+
+.power-node .node-name {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.power-node .node-role {
+  font-size: 0.8em;
+  color: var(--mist);
+  margin-top: 4px;
+}
+
+.power-arrow {
+  text-align: center;
+  color: var(--mist);
+  font-size: 1.4em;
+  padding: 4px 0;
+}
+
+.power-desc {
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--mist);
+  margin-top: -8px;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+/* === Secret Chain === */
+.secret-chain {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.secret-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px var(--shadow);
+  position: relative;
+}
+
+.secret-item::after {
+  content: '↓';
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold);
+  font-size: 1.2em;
+  z-index: 1;
+}
+
+.secret-item:last-child::after { display: none; }
+
+.secret-label {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.9em;
+  letter-spacing: 0.05em;
+}
+
+.secret-text {
+  margin-top: 8px;
+  font-size: 0.9em;
+  line-height: 1.8;
+  color: #4a4540;
+}
+
+/* Footer */
+.page-footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--mist);
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  .page-header h1 { font-size: 1.6em; }
+  .tab-btn { padding: 12px 16px; font-size: 0.85em; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .timeline { padding-left: 30px; }
+  .power-nodes { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>权 · 谋 · 局</h1>
+  <div class="subtitle">陆灼焱故事 · 人物关系与剧情导图</div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('characters')">人物关系</button>
+  <button class="tab-btn" onclick="switchTab('power')">权力格局</button>
+  <button class="tab-btn" onclick="switchTab('secrets')">秘密链条</button>
+  <button class="tab-btn" onclick="switchTab('timeline')">剧情主线</button>
+</div>
+
+<!-- ==================== 人物关系 ==================== -->
+<div id="characters" class="tab-content active">
+
+  <div class="faction-title">核心双主角</div>
+  <div class="cards-grid">
+    <div class="char-card">
+      <div class="char-name">陆灼焱 <span class="char-title">状元 · 驸马</span></div>
+      <div class="char-desc">
+        智多近妖，亦正亦邪。殿试夺魁后被永平帝以赐婚锁住仕途，甘为公主在翰林院当小编撰。谢家案后先于所有人破解玉玺之谜，暗中与魏子杰合作，一切只为保护妻儿平安脱身。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">挚爱</span> 雍华公主李令仪<br>
+        <span class="rel-tag friend">至交 → 对手</span> 谢澄<br>
+        <span class="rel-tag enemy">暗中合作利用</span> 魏子杰<br>
+        <span class="rel-tag enemy">被忌惮</span> 永平帝
+      </div>
+    </div>
+    <div class="char-card jade">
+      <div class="char-name">谢澄 <span class="char-title">探花 · 托孤重臣</span></div>
+      <div class="char-desc">
+        君子风骨，正直到执拗。三岁启蒙，十岁以夜雪寒芦帖名震天下。谢家覆没后被老皇帝留作托孤之人，斗倒三方势力后成为内阁首辅。最终因手下人毒害陆灼焱之子而与挚友决裂，辞官还乡。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">私通 · 真爱</span> 宁玉<br>
+        <span class="rel-tag friend">至交 → 对手</span> 陆灼焱<br>
+        <span class="rel-tag family">师生</span> 宋文贤（启蒙）、魏子杰（为官之道）<br>
+        <span class="rel-tag enemy">被利用</span> 永平帝（托孤棋子）
+      </div>
+    </div>
+  </div>
+
+  <div class="faction-title">皇室</div>
+  <div class="cards-grid">
+    <div class="char-card">
+      <div class="char-name">永平帝 <span class="char-title">开国皇帝</span></div>
+      <div class="char-desc">
+        造反夺位，戎马一生，极其精明。一生在找传国玉玺以证正统。用女儿婚姻废陆灼焱、用灭门锻造谢澄为孤臣、用友情锁住两头猛兽互相制衡。年老力衰镇不住局面，但布局之深远，死后仍在运转。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">父女</span> 雍华公主李令仪<br>
+        <span class="rel-tag family">父子</span> 幼帝<br>
+        <span class="rel-tag enemy">制衡</span> 孙涟、宇文怀<br>
+        <span class="rel-tag enemy">忌惮利用</span> 陆灼焱、谢澄
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-name">雍华公主 · 李令仪 <span class="char-title">驸马之妻</span></div>
+      <div class="char-desc">
+        刚烈不矫情，深爱陆灼焱。本是父亲棋局中的棋子而不自知。主线中因发现儿子处境危险而干政逼陆灼焱站队，最终在权力斗争中被杀。IF线中因父亲被逼死、弟弟成傀儡、丈夫变仇人而自裁。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">夫妻</span> 陆灼焱<br>
+        <span class="rel-tag family">父女</span> 永平帝<br>
+        <span class="rel-tag family">姐弟</span> 幼帝<br>
+        <span class="rel-tag friend">好友</span> 宁玉
+      </div>
+    </div>
+  </div>
+
+  <div class="faction-title">三方势力</div>
+  <div class="cards-grid">
+    <div class="char-card villain">
+      <div class="char-name">孙涟 <span class="char-title">内阁首辅 · 左相</span></div>
+      <div class="char-desc">
+        从龙功臣，野心家。表面忠臣，实欲谋反称帝。杀死亲妹妹孙静荷灭口，将前朝太子之子萧瑢（实为魏子杰亲子）改名孙怀瑾养在身边当傀儡棋子。手中缺传国玉玺，一直在寻找。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">兄妹</span> 孙静荷（已杀）、孙静莲（不知其存在）<br>
+        <span class="rel-tag family">以为是外甥</span> 孙怀瑾（实为魏子杰之子）<br>
+        <span class="rel-tag enemy">党争</span> 宇文怀<br>
+        <span class="rel-tag enemy">被利用</span> 宋文贤
+      </div>
+    </div>
+    <div class="char-card villain">
+      <div class="char-name">宇文怀 <span class="char-title">武将之首 · 右相</span></div>
+      <div class="char-desc">
+        军事驻地贪腐，用假水患截赈灾银，以粮换盐引形成产业链。为掩盖罪行构陷谢家，借谋逆案一石三鸟：扳孙涟、灭口谢家、震慑朝堂。同时私通外敌，亦有谋逆之心。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag enemy">构陷</span> 谢家<br>
+        <span class="rel-tag enemy">党争</span> 孙涟<br>
+        <span class="rel-tag enemy">贪腐链条</span> 杨树村水患案
+      </div>
+    </div>
+    <div class="char-card villain">
+      <div class="char-name">魏子杰 <span class="char-title">礼部侍郎 · 中立派</span></div>
+      <div class="char-desc">
+        全剧最阴最无人性之人。娶了孙静荷的双胞胎妹妹孙静莲。因掉包事件，实际养育着真正的前朝太子遗孤萧瑢，而他的亲生儿子反而在孙涟手中。写艳情野史暴露萧瑢存在，用亲儿子当靶子，企图扶真萧瑢上位自己当太上皇。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">夫妻</span> 孙静莲<br>
+        <span class="rel-tag family">养子（真萧瑢）</span> 府中之子<br>
+        <span class="rel-tag family">亲子（被当棋子）</span> 孙怀瑾<br>
+        <span class="rel-tag family">师生</span> 谢澄（第二任老师）<br>
+        <span class="rel-tag enemy">暗中被利用</span> 被陆灼焱利用
+      </div>
+    </div>
+  </div>
+
+  <div class="faction-title">关键人物</div>
+  <div class="cards-grid">
+    <div class="char-card neutral">
+      <div class="char-name">宋文贤 <span class="char-title">前朝太子太傅 · 大儒</span></div>
+      <div class="char-desc">
+        前朝覆灭后辞官归隐，知道太子与孙静荷有子。将传国玉玺藏于前朝太子行宫废墟的燕子窝中。用大白话写灯谜诗"重门深锁燕迟归"传递秘密，反其道而行之骗过所有聪明人。谢澄的启蒙恩师。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">师生</span> 前朝太子萧赴月、谢澄<br>
+        <span class="rel-tag enemy">被利用</span> 孙涟（以为在合作复辟）<br>
+        <span class="rel-tag friend">暗中传信</span> 孙怀瑾
+      </div>
+    </div>
+    <div class="char-card neutral">
+      <div class="char-name">宁玉 <span class="char-title">户部侍郎宁逢春之"女"</span></div>
+      <div class="char-desc">
+        实为男子，因身体畸形（双性）从小被当女儿养。与谢澄有十年书信之情，私通。偶然翻到魏子杰所写的艳情野史，得知前朝太子私生子的存在，将消息传给谢澄，成为破局的关键线索来源。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">私通 · 真爱</span> 谢澄<br>
+        <span class="rel-tag friend">好友</span> 雍华公主<br>
+        <span class="rel-tag family">父子</span> 宁逢春（投机派）
+      </div>
+    </div>
+    <div class="char-card neutral">
+      <div class="char-name">孙怀瑾 / 真名不详 <span class="char-title">孙涟"之子"</span></div>
+      <div class="char-desc">
+        所有人以为他是前朝太子遗孤萧瑢，实为魏子杰与孙静莲的亲生儿子。被孙涟当傀儡养大。知道舅舅是杀母仇人，一直暗中提防。能读懂宋文贤诗中的字面含义——因为他幼年住过太子行宫。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">亲生父母</span> 魏子杰、孙静莲<br>
+        <span class="rel-tag enemy">仇人</span> 孙涟（杀母之仇）<br>
+        <span class="rel-tag family">被误认</span> 被所有人当作萧瑢
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-name">真·萧瑢 <span class="char-title">前朝太子遗孤</span></div>
+      <div class="char-desc">
+        前朝太子萧赴月与孙静荷之子，真正的前朝皇室血脉。因婴儿时期被孙静莲掉包，被魏子杰当作自己和孙静莲的亲生儿子养大，身世成谜。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">亲生父母</span> 萧赴月、孙静荷<br>
+        <span class="rel-tag family">养父</span> 魏子杰<br>
+        <span class="rel-tag family">养母</span> 孙静莲（亲生母亲的双胞胎妹妹）
+      </div>
+    </div>
+    <div class="char-card neutral">
+      <div class="char-name">孙静荷 / 孙静莲 <span class="char-title">双胞胎姐妹</span></div>
+      <div class="char-desc">
+        孙涟妾室所生双胞胎，因双胞胎被视为不祥，妹妹静莲出生即被送至民间。姐姐静荷与太子萧赴月私通生子，被孙涟杀害灭口。妹妹静莲嫁给穷学子魏子杰，暗中与姐姐有来往。姐姐托子后，静莲偷换了两个孩子。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag love">静荷 ↔ 萧赴月</span>（私通）<br>
+        <span class="rel-tag love">静莲 ↔ 魏子杰</span>（夫妻）<br>
+        <span class="rel-tag family">兄妹</span> 孙涟（只知静荷，不知静莲存在）
+      </div>
+    </div>
+    <div class="char-card neutral">
+      <div class="char-name">宁逢春 <span class="char-title">户部侍郎</span></div>
+      <div class="char-desc">
+        投机派，原为左相孙涟派系边缘人物。察觉谢澄是皇帝的托孤人选后，默许宁玉与谢澄私通，暗中提点谢澄皇帝的用意，企图绑定未来首辅。
+      </div>
+      <div class="char-relations">
+        <span class="rel-tag family">父子</span> 宁玉<br>
+        <span class="rel-tag enemy">投机</span> 随风倒向最强势力
+      </div>
+    </div>
+  </div>
+
+  <div class="faction-title">前朝 · 已故</div>
+  <div class="cards-grid">
+    <div class="char-card neutral">
+      <div class="char-name">萧赴月 <span class="char-title">前朝太子</span></div>
+      <div class="char-desc">风华绝代之辈。与孙静荷在太子行宫私通，生下萧瑢。前朝覆灭时被永平帝所杀。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 权力格局 ==================== -->
+<div id="power" class="tab-content">
+
+  <div class="faction-title">永平朝权力结构</div>
+  <div class="power-diagram">
+    <div class="power-level">
+      <div class="power-label">至 高 权 力</div>
+      <div class="power-nodes">
+        <div class="power-node emperor">
+          <div class="node-name">永平帝</div>
+          <div class="node-role">造反夺位 · 戎马帝王 · 年老力衰</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="power-arrow">▼</div>
+    <div class="power-desc">三方制衡，互相牵制</div>
+
+    <div class="power-level">
+      <div class="power-label">三 方 势 力</div>
+      <div class="power-nodes">
+        <div class="power-node left">
+          <div class="node-name">孙涟</div>
+          <div class="node-role">内阁首辅（左）· 文臣之首<br>真实目的：谋反称帝</div>
+        </div>
+        <div class="power-node right">
+          <div class="node-name">宇文怀</div>
+          <div class="node-role">武将之首（右）<br>真实目的：贪腐 + 私通外敌</div>
+        </div>
+        <div class="power-node mid">
+          <div class="node-name">魏子杰</div>
+          <div class="node-role">礼部侍郎 · 中立派<br>真实目的：偷天换日当太上皇</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="power-arrow">▼</div>
+    <div class="power-desc">皇帝的棋局：用友情锁住两头猛兽</div>
+
+    <div class="power-level">
+      <div class="power-label">帝 王 棋 子</div>
+      <div class="power-nodes">
+        <div class="power-node royal">
+          <div class="node-name">陆灼焱</div>
+          <div class="node-role">驸马 · 世家 + 宗亲身份<br>被赐婚锁住仕途<br>最大威胁：其子可争皇位</div>
+        </div>
+        <div class="power-node royal">
+          <div class="node-name">谢澄</div>
+          <div class="node-role">托孤之臣 · 未来首辅<br>被灭门锻造为孤臣<br>与陆灼焱以友情制衡</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="power-arrow">▼</div>
+    <div class="power-desc">最终目标：幼帝安稳登基</div>
+
+    <div class="power-level">
+      <div class="power-label">皇 位 继 承</div>
+      <div class="power-nodes">
+        <div class="power-node emperor">
+          <div class="node-name">幼帝</div>
+          <div class="node-role">永平帝幼子 · 公主同母弟</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="faction-title" style="margin-top:50px;">老皇帝的帝王心术</div>
+  <div class="cards-grid">
+    <div class="char-card">
+      <div class="char-name">第一步：废棋</div>
+      <div class="char-desc">殿试识出陆灼焱不可掌控，将本该尚公主的探花谢澄换成状元陆灼焱。驸马不得入朝——以婚姻锁死最危险的人。</div>
+    </div>
+    <div class="char-card">
+      <div class="char-name">第二步：铸刀</div>
+      <div class="char-desc">默许谢家谋逆案，灭谢家满门。斩断谢澄所有牵绊，使其成为无根基、无退路、只能效忠皇权的孤臣。留谢澄活命——既是找玉玺的钓饵，更是培养托孤之人。</div>
+    </div>
+    <div class="char-card">
+      <div class="char-name">第三步：锁链</div>
+      <div class="char-desc">谢澄为首辅护幼帝，陆灼焱为宗亲世家之首。两人才智相当、互为对手，却因至交之情下不了死手——永远维持微妙平衡。帝王死后棋局仍在运转。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 秘密链条 ==================== -->
+<div id="secrets" class="tab-content">
+
+  <div class="faction-title">传国玉玺之谜</div>
+  <div class="secret-chain">
+    <div class="secret-item">
+      <div class="secret-label">前朝覆灭前</div>
+      <div class="secret-text">太子萧赴月将玉玺存放于太子行宫。宋文贤（太子太傅）在前朝灭亡时将玉玺取走。待行宫被永平帝夷为废墟后，宋文贤将玉玺藏回废墟中一棵树上的燕子窝里。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">灯谜诗 · 真相</div>
+      <div class="secret-text">宋文贤写下"重门深锁燕迟归"，放在孙涟灯会的灯谜中。所有聪明人都以为这是复杂的密码暗号，拼命猜字谜解隐喻。实际上这是大白话——行宫的门锁了，燕子窝里有东西所以燕子回不了巢。只有小孩子的直觉式阅读才能理解。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">两个知情人</div>
+      <div class="secret-text">谢澄——小时候宋文贤教他练字用这首诗，絮叨过太子行宫的布局，但谢澄从不觉得这是秘密。<br>孙怀瑾——三岁前住在太子行宫，读诗就是字面意思：家里燕子窝有东西。他提防孙涟，绝不透露。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">陆灼焱破局</div>
+      <div class="secret-text">陆灼焱比所有人更早悟透诗意（亦正亦邪的人反而能用最朴素的思维），先一步找到行宫废墟，从燕子窝中取出玉玺，秘不示人。作为保护妻儿的终极底牌。</div>
+    </div>
+  </div>
+
+  <div class="faction-title" style="margin-top:50px;">偷天换日之谜</div>
+  <div class="secret-chain">
+    <div class="secret-item">
+      <div class="secret-label">双胞胎</div>
+      <div class="secret-text">孙家妾室生下双胞胎女儿，因古代视双胞为不祥，妹妹孙静莲被送至民间抚养，留下姐姐孙静荷。孙涟只知有一个妹妹。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">两段私情</div>
+      <div class="secret-text">姐姐孙静荷与前朝太子萧赴月在太子行宫私通，生下萧瑢。<br>妹妹孙静莲嫁给穷学子魏子杰，生下一子。<br>姐妹暗中有来往。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">掉包</div>
+      <div class="secret-text">静荷未婚有子惊惧，将萧瑢托付给妹妹静莲。静莲认为太子之子将来要当皇帝，心生贪念，将自己的孩子和萧瑢对换后交还给静荷。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">错位人生</div>
+      <div class="secret-text">孙涟从静荷处拿走的孩子（后改名孙怀瑾）实为魏子杰亲子。<br>魏子杰家中养大的孩子实为真·萧瑢——前朝太子遗孤。<br>孙涟杀了静荷，不知还有个妹妹静莲活在世上。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">魏子杰的毒计</div>
+      <div class="secret-text">多年后魏子杰权势渐长，发现孙怀瑾与自己养子长相九分相似（双胞胎母亲所生），起了偷天换日之心。写艳情野史暴露"太子有私生子"，将亲儿子当靶子吸引追杀，待各方势力两败俱伤后扶真萧瑢上位，自己当太上皇。</div>
+    </div>
+  </div>
+
+  <div class="faction-title" style="margin-top:50px;">杨树村贪腐案</div>
+  <div class="secret-chain">
+    <div class="secret-item">
+      <div class="secret-label">表面</div>
+      <div class="secret-text">永平十年，杨树村发水患，朝廷批3000两白银赈灾。村民死绝，村长失踪。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">真相</div>
+      <div class="secret-text">杨树村不是水患，是饥荒。灾情被篡改，赈灾银被宇文怀的人截走。同时有盐商从杨树村旁码头运粮到宇文怀驻地雀山关换盐引——水患是假的，不到半月就能过船。村民被活活饿死。</div>
+    </div>
+    <div class="secret-item">
+      <div class="secret-label">产业链</div>
+      <div class="secret-text">截赈灾银 → 粮食运到驻地 → 换盐引 → 盐商卖盐获利 → 回流给宇文怀。多地如此，形成系统性贪腐。这是宇文怀构陷谢家、搞倒孙涟的真实原因——怕被发现。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 剧情主线 ==================== -->
+<div id="timeline" class="tab-content">
+
+  <div class="faction-title">主线剧情</div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-era">前朝末年</div>
+      <div class="timeline-title">前朝覆灭</div>
+      <div class="timeline-desc">太子萧赴月与孙静荷在行宫私通生子萧瑢。孙静莲掉包两个孩子。永平帝（时为将军）造反，杀太子，建立新朝。宋文贤辞官归隐，带走玉玺后藏于行宫废墟燕子窝。孙涟从静荷处取走孩子（实为魏子杰之子），杀了静荷灭口。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-era">永平初年</div>
+      <div class="timeline-title">殿试风云</div>
+      <div class="timeline-desc">陆灼焱夺状元，谢澄中探花，游千重为榜眼。永平帝在殿试上看出陆灼焱不可掌控，将本该尚公主的谢澄换成陆灼焱。赐婚雍华公主，锁其仕途。陆灼焱甘愿在翰林院当小编撰。</div>
+    </div>
+
+    <div class="timeline-item critical">
+      <div class="timeline-era">东元三年</div>
+      <div class="timeline-title">谢家谋逆案</div>
+      <div class="timeline-desc">宇文怀为掩盖贪腐，以宋文贤前朝身份为由构陷谋逆，牵连孙涟派系。谢郡守为宋文贤求情被拖下水。谢郡守与宋文贤被斩首，谢母投河，幼弟流放（陆灼焱暗中救出二弟）。谢澄因功名在身被轻拿轻放——永平帝有意留作托孤之人。</div>
+    </div>
+
+    <div class="timeline-item turning">
+      <div class="timeline-era">东元三年后</div>
+      <div class="timeline-title">谢澄重返翰林院</div>
+      <div class="timeline-desc">公主求情，谢澄回翰林当编修。被孙涟的人刁难，被发配整理旧档案。意外发现杨树村水患案的漏洞和盐政纪要的矛盾，与陆灼焱联手调查，揭开宇文怀贪腐产业链。</div>
+    </div>
+
+    <div class="timeline-item turning">
+      <div class="timeline-era">调查期间</div>
+      <div class="timeline-title">灯谜与发现</div>
+      <div class="timeline-desc">陆灼焱在旧档案中发现孙涟元宵灯会灯谜里有宋文贤的诗"重门深锁燕迟归"。谢澄意识到老师并非无辜，谢家是被卷入了更大的阴谋。同时谢澄通过宁玉看到的艳情野史得知前朝太子有私生子。灯会上得知孙涟"之子"叫孙怀瑾——与萧瑢（玉）同义。</div>
+    </div>
+
+    <div class="timeline-item critical">
+      <div class="timeline-era">关键转折</div>
+      <div class="timeline-title">至交分道</div>
+      <div class="timeline-desc">宁逢春暗中提点谢澄皇帝的托孤之意。谢澄明白自己将与陆灼焱为敌，隐瞒了太子私生子的线索。陆灼焱察觉谢澄的防备，先一步破解灯谜找到玉玺。两人以"一杯水"的隐喻对话告别纯粹的友谊，各自暗中运作。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-era">布局期</div>
+      <div class="timeline-title">各方暗战</div>
+      <div class="timeline-desc">陆灼焱发现孙怀瑾与魏子杰养子长相相似，察觉魏子杰的秘密，与之合作——让魏子杰用孙怀瑾当靶子引发各方混战。陆灼焱的目的：趁乱带妻儿脱身。谢澄继续追查三方势力的罪证。</div>
+    </div>
+
+    <div class="timeline-item turning">
+      <div class="timeline-era">最终决战</div>
+      <div class="timeline-title">三方覆灭 · 新帝登基</div>
+      <div class="timeline-desc">谢澄用贪腐和私通外敌扳倒宇文怀，揭露孙涟谋逆真相，魏子杰的偷天换日之计也被识破。三方势力覆灭。永平帝托孤谢澄，谢澄成为内阁首辅辅佐新帝。</div>
+    </div>
+
+    <div class="timeline-item critical">
+      <div class="timeline-era">新朝</div>
+      <div class="timeline-title">最终悲剧</div>
+      <div class="timeline-desc">公主发现儿子处境危险（既是皇位威胁又是世家牵绊），开始干政逼陆灼焱站队。谢澄手下人毒害陆灼焱与公主之子（未死但痴呆）。陆灼焱与谢澄正式对立。公主在权力斗争中被杀。两人两败俱伤。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-era">尾声</div>
+      <div class="timeline-title">各自余生</div>
+      <div class="timeline-desc">陆灼焱带着痴呆的儿子出家。谢澄辞官还乡与宁玉过平凡乡间生活。两人此后再未相见，直至身死。</div>
+    </div>
+  </div>
+
+  <div class="timeline-branch">
+    <div class="branch-label">IF线 · 谢澄身死</div>
+    <div class="branch-item">
+      <strong>谢澄病死</strong>
+      谢家覆没后谢澄未婚妻悔婚，一无所有又被污蔑，一病不起，新年时病逝。
+    </div>
+    <div class="branch-item">
+      <strong>陆灼焱黑化</strong>
+      挚友之死成为转折点，明白权力的重要性。凭公主求情入朝为官，开始玩弄权术，贪恋权力。
+    </div>
+    <div class="branch-item">
+      <strong>权倾朝野</strong>
+      成为内阁首辅（丞相），逼死老皇帝，扶持幼帝，背后干政成为摄政王。处处防着公主，欺骗公主。
+    </div>
+    <div class="branch-item">
+      <strong>公主自裁</strong>
+      父亲被逼死、弟弟成傀儡、丈夫变仇人、自己被囚禁。求见陆灼焱被拒（最后一根稻草），以金钗自裁于公主府。
+    </div>
+    <div class="branch-item">
+      <strong>陆灼焱晚年</strong>
+      患肺痨时日无多，杀尽当年参与污蔑谢家的所有官员及家眷。清理朝堂后将权力还给皇帝（仁慈亲民但懦弱的太平之君）。前往公主府，握着公主自裁用的金钗，同样自裁身亡。功过由后人评说。
+    </div>
+    <div class="branch-item">
+      <strong>延续至现代</strong>
+      陆灼焱转世为陆氏能源太子爷，玩世不恭的花花公子。22岁忆起前世。谢澄灵魂穿越到今世谢澄身上。前女友李蔓怡即前世公主李令仪。前世执念映射今生纠葛，故事从这里开始。
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  权 · 谋 · 局 — 陆灼焱故事创作参考
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
